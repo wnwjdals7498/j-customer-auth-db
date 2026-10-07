@@ -79,7 +79,7 @@ PMT 통합 project 분류 `j-customer-auth-db`.
 | C7 변경 요청 | 완료(Done) | - |
 | C8 고객 서버 검증 | `provision-service`로 설치, systemd·내부 포트·`/ext/customer-auth/` 경로·HTTPS, j-groupware 화면 손님 등록 → 사이트 서버 역할 스크립트로 손님 로그인 → 외부 조회, VM 대상 C6 | C6, j-groupware G10·G13·G18 |
 
-backlog: 손님 비밀번호 변경·재설정, 서명 키 교체, API 키 마지막 사용 시각·만료일, OIDC 전환, 손님 셀프 가입.
+backlog: 손님 비밀번호 변경·재설정, 서명 키 교체, API 키 마지막 사용 시각·만료일, 손님 로그인을 OIDC 제공자 방식으로 바꾸기, 손님 셀프 가입.
 
 ## 이전 번호 대응
 
