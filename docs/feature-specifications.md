@@ -1,6 +1,6 @@
 # j-customer-auth-db 기능 명세
 
-작성일: 2026-10-08. 상태: **서버 코드 구현·클라우드 API 시험 통과, UI/VM 인수 전**. [목록](features.md), [결정](decisions.md), [공통 기준](../../j-groupware/docs/suite-feature-specifications.md)을 따른다. 손님 계정은 Keycloak 회원과 별개다. 관리 화면은 j-groupware가 제공한다.
+작성일: 2026-10-08. 상태: **서버 코드 구현·클라우드 API 시험 통과, 전체 인수 시험 미완료**. UI/VM 인수는 미실행이다. [목록](features.md), [결정](decisions.md), [공통 기준](../../j-groupware/docs/suite-feature-specifications.md)을 따른다. 손님 계정은 Keycloak 회원과 별개다. 관리 화면은 j-groupware가 제공한다.
 
 ## 입력·출력·데이터
 
