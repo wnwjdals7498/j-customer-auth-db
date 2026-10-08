@@ -6,3 +6,10 @@
 node_modules/
 __pycache__/
 *.log
+
+dist/
+coverage/
+.npmrc
+
+# Local dependency directory can also be a cloud cache symlink.
+node_modules
