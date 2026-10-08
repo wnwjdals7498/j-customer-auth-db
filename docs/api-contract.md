@@ -16,4 +16,18 @@
 
 비밀번호는 정확히 `@node-rs/argon2` 2.2.2, Argon2id v19, memory=19456KiB, iterations=2, parallelism=1, output=32바이트, 랜덤 salt로 저장한다. 근거: [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html), [공식 패키지](https://github.com/napi-rs/node-rs/tree/main/packages/argon2). Fastify 5.12.5와 [호환되는 Swagger 9](https://github.com/fastify/fastify-swagger#compatibility)의 9.9.1을 고정해 외부 route의 실제 schema에서 OpenAPI를 만든다. 내부 관리 route/secret 예제는 숨긴다.
 
-오류는 `{error,message}`다. 400 invalid_request, 401 unauthenticated/invalid_credentials, 403 forbidden, 404 not_found, 409 conflict, 429 rate_limited, 503 unavailable이다. 비밀번호·키·서명 private key·토큰은 로그에 남기지 않는다. 응답은 JWKS(공개 300초 캐시) 외에 no-store다. C8 VM·UI·gateway 검증 및 registry 게시는 코드 구현/로컬 설치 검사와 구분한다.
+오류는 `{error,message}`다. 400 invalid_request, 401 unauthenticated/invalid_credentials, 403 forbidden, 404 not_found, 409 conflict, 429 rate_limited, 503 unavailable이다. 비밀번호·키·서명 private key·토큰은 로그에 남기지 않는다. 응답은 JWKS(공개 300초 캐시) 외에 no-store다. C8 고객 VM·정식 UI와 전체 제품군 인수는 클라우드의 연결 검사와 구분한다.
+
+`@j-customer-auth-db/contracts@0.1.0`의 `MANAGEMENT_SCHEMAS`는 내부 손님
+생성/수정과 API 키 관리의 공용 요청·응답 schema다. 서버와 groupware BFF가
+같은 schema 및 DTO를 소비한다. BFF의 `/api/customer-auth/guests`와
+`/api/customer-auth/api-keys`는 세션·role·CSRF 검사 후 회원 Bearer만 내부에
+전달하며, 숫자 비밀번호 등을 문자열로 바꾸지 않는다. 서비스 키·tenant·
+Cookie를 내부 요청에 추가하지 않으며 외부 로그인/쓰기 proxy를 제공하지 않는다.
+
+이 버전은 격리 클라우드의 `http://127.0.0.1:4873/`에 immutable 게시하고,
+groupware server의 exact dependency와 lockfile integrity로 설치했다.
+같은 버전 재게시를 사전 거부했으며 cold 서버의 contracts JS와 registry 소비본의
+바이트 일치도 검증했다. 실제 HTTPS gateway에서 외부 로그인·JWT/JWKS 검증과
+내부 관리 경로 차단을 확인했다. 운영 registry 게시·배포를 의미하지 않는다.
+상세 실행 증거는 [연결 보고서](https://github.com/wnwjdals7498/j-groupware/blob/codex/cloud-auth-foundation-20261008/docs/cloud-customer-relay-bundle-verification-2026-10-08.md)에 있다.

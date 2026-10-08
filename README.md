@@ -20,4 +20,8 @@ TLS/CA·서명 private key는 체크아웃 밖의 보호된 경로에 둔다. �
 그 저장소의 격리 환경·`TMPDIR` 지침으로 해당 파일을 실행한다.
 환경이 없으면 실패하며 통합 시험을 건너뛰어 통과로 표시하지 않는다.
 이 저장소의 `npm run test:integration`은 이 교차 저장소 시험을 실행한다.
-contracts registry 게시, installer/gateway 연결, 정식 UI와 C8 실제 VM 인수는 별도 미완료다.
+`@j-customer-auth-db/contracts@0.1.0`을 격리 클라우드의 loopback 사설 registry에
+게시하고 groupware BFF의 정확한 버전 의존성으로 소비했다. 같은 버전의 재게시를
+거부한다. BFF 손님/키 관리, cold 번들·제품 환경·TLS 준비 상태와 실제 Nginx 연결은
+검증했다. [연결 검증 기록](https://github.com/wnwjdals7498/j-groupware/blob/codex/cloud-auth-foundation-20261008/docs/cloud-customer-relay-bundle-verification-2026-10-08.md)을
+따른다. 정식 UI, 전체 설치 진입점과 C8 실제 고객 VM 인수는 아직 미완료다.
