@@ -10,7 +10,7 @@ import {
   API_KEY_HEADER,
   SCHEMAS,
   GUEST_PAGE_SCHEMA,
-  LOGIN_ID_PATTERN,
+  MANAGEMENT_SCHEMAS,
 } from "@j-customer-auth-db/contracts";
 import type {
   GuestInput,
@@ -37,48 +37,10 @@ const errors = Object.fromEntries(
 );
 const hidden = { hide: true };
 const external = { security: [{ apiKey: [] }] };
-const guestInput = {
-  type: "object",
-  additionalProperties: false,
-  required: ["name", "loginId", "password"],
-  properties: {
-    name: { type: "string", minLength: 1, maxLength: 120 },
-    loginId: { type: "string", pattern: LOGIN_ID_PATTERN },
-    contact: { type: "string", maxLength: 256 },
-    password: SCHEMAS.login.properties.password,
-  },
-};
-const guestUpdate = {
-  ...guestInput,
-  required: [],
-  minProperties: 1,
-  properties: {
-    name: guestInput.properties.name,
-    loginId: guestInput.properties.loginId,
-    contact: guestInput.properties.contact,
-  },
-};
-const keySchema = {
-  type: "object",
-  additionalProperties: false,
-  required: ["id", "name", "scopes", "createdAt", "revokedAt"],
-  properties: {
-    id: { type: "string", format: "uuid" },
-    name: { type: "string" },
-    scopes: {
-      type: "array",
-      items: { type: "string", enum: ["guest:read", "guest:write"] },
-    },
-    createdAt: { type: "string", format: "date-time" },
-    revokedAt: { type: ["string", "null"], format: "date-time" },
-  },
-};
-const issuedKeySchema = {
-  type: "object",
-  additionalProperties: false,
-  required: ["apiKey", "secret"],
-  properties: { apiKey: keySchema, secret: { type: "string" } },
-};
+const guestInput = MANAGEMENT_SCHEMAS.guestInput;
+const guestUpdate = MANAGEMENT_SCHEMAS.guestUpdate;
+const keySchema = MANAGEMENT_SCHEMAS.apiKey;
+const issuedKeySchema = MANAGEMENT_SCHEMAS.issuedApiKey;
 export async function createApp(options: {
   pool: Pool;
   tenant: string;
@@ -245,21 +207,7 @@ export async function createApp(options: {
     {
       schema: {
         ...hidden,
-        body: {
-          type: "object",
-          additionalProperties: false,
-          required: ["name", "scopes"],
-          properties: {
-            name: guestInput.properties.name,
-            scopes: {
-              type: "array",
-              minItems: 1,
-              maxItems: 2,
-              uniqueItems: true,
-              items: keySchema.properties.scopes.items,
-            },
-          },
-        },
+        body: MANAGEMENT_SCHEMAS.apiKeyInput,
         response: { 201: issuedKeySchema, ...errors },
       },
       preHandler: async (request) => {
@@ -282,12 +230,7 @@ export async function createApp(options: {
       schema: {
         ...hidden,
         response: {
-          200: {
-            type: "object",
-            additionalProperties: false,
-            required: ["items"],
-            properties: { items: { type: "array", items: keySchema } },
-          },
+          200: MANAGEMENT_SCHEMAS.apiKeys,
           ...errors,
         },
       },

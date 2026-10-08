@@ -51,6 +51,10 @@ export interface IssuedApiKey {
   apiKey: ApiKey;
   secret: string;
 }
+export interface ApiKeyInput {
+  name: string;
+  scopes: ApiKeyScope[];
+}
 export interface GuestLogin {
   loginId: string;
   password: string;
@@ -150,5 +154,69 @@ export const GUEST_PAGE_SCHEMA = {
   properties: {
     items: { type: "array", items: SCHEMAS.guest },
     next: { type: ["string", "null"] },
+  },
+};
+const guestInput = {
+  type: "object",
+  additionalProperties: false,
+  required: ["name", "loginId", "password"],
+  properties: {
+    name: text(120),
+    loginId: { type: "string", pattern: LOGIN_ID_PATTERN },
+    contact: { type: "string", maxLength: 256 },
+    password: SCHEMAS.login.properties.password,
+  },
+};
+const apiKey = {
+  type: "object",
+  additionalProperties: false,
+  required: ["id", "name", "scopes", "createdAt", "revokedAt"],
+  properties: {
+    id: uuid,
+    name: text(120),
+    scopes: {
+      type: "array",
+      minItems: 1,
+      maxItems: 2,
+      uniqueItems: true,
+      items: { type: "string", enum: ["guest:read", "guest:write"] },
+    },
+    createdAt: date,
+    revokedAt: { type: ["string", "null"], format: "date-time" },
+  },
+};
+export const MANAGEMENT_SCHEMAS = {
+  guestInput,
+  guestUpdate: {
+    ...guestInput,
+    required: [],
+    minProperties: 1,
+    properties: {
+      name: guestInput.properties.name,
+      loginId: guestInput.properties.loginId,
+      contact: guestInput.properties.contact,
+    },
+  },
+  apiKey,
+  apiKeyInput: {
+    type: "object",
+    additionalProperties: false,
+    required: ["name", "scopes"],
+    properties: { name: text(120), scopes: apiKey.properties.scopes },
+  },
+  apiKeys: {
+    type: "object",
+    additionalProperties: false,
+    required: ["items"],
+    properties: { items: { type: "array", items: apiKey } },
+  },
+  issuedApiKey: {
+    type: "object",
+    additionalProperties: false,
+    required: ["apiKey", "secret"],
+    properties: {
+      apiKey,
+      secret: { type: "string", pattern: API_KEY_PATTERN },
+    },
   },
 };

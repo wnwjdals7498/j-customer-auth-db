@@ -1,6 +1,6 @@
 # j-customer-auth-db 기능 목록
 
-j-customer-auth-db가 제공해야 하는 기능 목록이다. 근거는 [`decisions.md`](decisions.md)의 결정 번호와 제품군 공통 결정(`j-groupware/docs/architecture.md`의 S 번호)이고, 담당 Item은 PMT 통합 project 분류 `j-customer-auth-db`다. 모두 구현 전이다.
+j-customer-auth-db가 제공해야 하는 기능 목록이다. 근거는 [`decisions.md`](decisions.md)의 결정 번호와 제품군 공통 결정(`j-groupware/docs/architecture.md`의 S 번호)이고, 담당 Item은 PMT 통합 project 분류 `j-customer-auth-db`다. backend 코드와 독립 클라우드 API 검증을 완료했으며 UI·고객 VM·전체 인수는 미완료다. 현재 진척도는 j-groupware의 implementation-progress.json과 기능 명세를 따른다.
 
 화면은 j-groupware "손님" 메뉴(GW-32·33)가 그린다. 이 저장소는 API만 만든다.
 
