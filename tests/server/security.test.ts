@@ -64,6 +64,7 @@ describe("customer-auth credentials and contracts", () => {
     expect(new Set(values).size).toBe(20);
     expect(values.every(validApiKey)).toBe(true);
     expect(validApiKey([values[0]])).toBe(false);
+    expect(validApiKey(values[0] + "\n")).toBe(false);
     expect(digest(values[0]!)).toMatch(/^[a-f0-9]{64}$/);
   });
   it("publishes only RSA public material and rejects expired and wrong-signed JWTs", async () => {
@@ -115,7 +116,7 @@ describe("customer-auth credentials and contracts", () => {
       contact: "010",
       password: "  password-7498 ",
     });
-    for (const loginId of ["UPPER", "ab", "../guest", "guest space"])
+    for (const loginId of ["UPPER", "ab", "../guest", "guest space", "guest\n"])
       expect(() => normalizeGuest({ loginId })).toThrow();
     expect(() => normalizeGuest({ name: "\u0000" })).toThrow();
     expect(() => validatePassword("short")).toThrow();

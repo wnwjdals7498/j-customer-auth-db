@@ -10,6 +10,7 @@ import type {
 } from "@j-customer-auth-db/contracts";
 import { LOGIN_LIMITS } from "@j-customer-auth-db/contracts";
 import { ApiError, invalid, missing, unauthenticated } from "./errors.js";
+import { cleanText } from "./validation.js";
 import type { PageCursor } from "./security.js";
 import { digest, issueKey } from "./security.js";
 
@@ -71,7 +72,7 @@ export class CustomerStore {
     query: { q?: string; limit?: string; cursor?: string },
     db: Pool | PoolClient = this.pool,
   ): Promise<GuestPage> {
-    const q = query.q?.trim() ?? "",
+    const q = cleanText(query.q ?? "", 120, true),
       limit = Number(query.limit ?? 50);
     const after = this.cursor.decode(query.cursor, this.tenant, q);
     const pattern = "%" + q.replace(/[\\%_]/g, "\\$&") + "%";

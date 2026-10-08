@@ -7,8 +7,8 @@ export const CUSTOMER_AUTH_PATHS = {
   openapi: "/ext/customer-auth/openapi.json",
 } as const;
 export const API_KEY_HEADER = "X-JCADB-API-Key";
-export const API_KEY_PATTERN = "^jcadb_[A-Za-z0-9_-]{43}$";
-export const LOGIN_ID_PATTERN = "^[a-z0-9][a-z0-9._-]{2,63}$";
+export const API_KEY_PATTERN = "^jcadb_[A-Za-z0-9_-]{43}(?![\\s\\S])";
+export const LOGIN_ID_PATTERN = "^[a-z0-9][a-z0-9._-]{2,63}(?![\\s\\S])";
 export const GUEST_TOKEN_POLICY = {
   algorithm: "RS256",
   audience: "j-customer-auth-db-guest",
